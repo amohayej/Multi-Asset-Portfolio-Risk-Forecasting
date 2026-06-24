@@ -1,0 +1,41 @@
+library(quantmod)
+library(PerformanceAnalytics)
+library(tseries)
+library(forecast)
+
+tickers <- c("AAPL", "MSFT", "GOOGL", "AMZN")
+
+getSymbols(tickers, src = "yahoo", from = "2020-01-01", to = "2026-01-01")
+
+prices <- merge(Ad(AAPL), Ad(MSFT), Ad(GOOGL), Ad(AMZN))
+colnames(prices) <- tickers
+
+returns <- na.omit(Return.calculate(prices))
+
+weights <- c(0.25, 0.25, 0.25, 0.25)
+
+portfolio_returns <- Return.portfolio(returns, weights = weights)
+
+charts.PerformanceSummary(portfolio_returns)
+
+mean_return <- mean(portfolio_returns)
+sd_return <- sd(portfolio_returns)
+
+sharpe_ratio <- mean_return / sd_return
+
+print(paste("Sharpe Ratio:", round(sharpe_ratio, 4)))
+
+VaR(portfolio_returns, p = 0.95, method = "historical")
+ES(portfolio_returns, p = 0.95, method = "historical")
+
+cor_matrix <- cor(returns)
+print(cor_matrix)
+
+chart.Correlation(returns, histogram = TRUE)
+aapl_prices <- Ad(AAPL)
+aapl_ts <- na.omit(aapl_prices)
+
+aapl_model <- auto.arima(aapl_ts)
+forecast_aapl <- forecast(aapl_model, h = 30)
+
+plot(forecast_aapl, main = "AAPL Price Forecast")
