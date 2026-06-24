@@ -28,6 +28,13 @@ The correlation matrix and scatter plots visualize strong co-movement among tech
 AAPL Price Forecast:  
 Shows historical trend and projected future prices with confidence intervals.
 
+</>Markdown
+![Performance](portfolio_performance.png)
 
+
+![Correlation](correlation_matrix.png)
+
+
+![Forecast](aapl_forecast.png)
 
 
